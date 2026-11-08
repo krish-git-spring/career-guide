@@ -1,7 +1,9 @@
 import { streams } from '../data/streams';
+import { anikaStreams } from '../data/anikaStreams';
 
-export default function StreamDetails({ streamKey, onBack }) {
-  const streamData = streams[streamKey];
+export default function StreamDetails({ streamKey, onBack, profile }) {
+  const streamsData = profile === 'anika' ? anikaStreams : streams;
+  const streamData = streamsData[streamKey];
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -28,7 +30,7 @@ export default function StreamDetails({ streamKey, onBack }) {
       </div>
 
       <h2 className="text-2xl font-bold text-gray-900 mb-6">
-        Sub-Streams and Specializations
+        {profile === 'anika' ? 'Fun Things You Can Try' : 'Sub-Streams and Specializations'}
       </h2>
 
       <div className="grid md:grid-cols-2 gap-6 mb-8">
@@ -57,7 +59,7 @@ export default function StreamDetails({ streamKey, onBack }) {
             </div>
 
             <div className="mb-4">
-              <h4 className="text-sm font-semibold text-gray-500 mb-2">Career Paths</h4>
+              <h4 className="text-sm font-semibold text-gray-500 mb-2">{profile === 'anika' ? 'Dream Jobs' : 'Career Paths'}</h4>
               <div className="space-y-2">
                 {subStream.careerPaths.map((path, pIdx) => (
                   <div key={pIdx} className="text-gray-700 text-sm font-medium flex items-start gap-2">
@@ -71,10 +73,11 @@ export default function StreamDetails({ streamKey, onBack }) {
             </div>
 
             <div className="mb-4">
-              <h4 className="text-sm font-semibold text-gray-500 mb-2">Program Duration</h4>
+              <h4 className="text-sm font-semibold text-gray-500 mb-2">{profile === 'anika' ? 'When You Grow Up' : 'Program Duration'}</h4>
               <div className="text-gray-700 font-semibold">{subStream.duration}</div>
             </div>
 
+            {subStream.countries ? (
             <div className="bg-gray-50 rounded-xl p-4">
               <h4 className="text-sm font-semibold text-gray-500 mb-3">
                 Available Programs
@@ -112,6 +115,12 @@ export default function StreamDetails({ streamKey, onBack }) {
                 </div>
               </div>
             </div>
+            ) : profile === 'anika' ? (
+              <div className="bg-pink-50 rounded-xl p-4">
+                <h4 className="text-sm font-semibold text-pink-600 mb-2">🌟 Fun Fact</h4>
+                <p className="text-gray-700 text-sm font-medium">Keep practicing these skills — every great artist, scientist, and athlete started exactly where you are now!</p>
+              </div>
+            ) : null}
           </div>
         ))}
       </div>

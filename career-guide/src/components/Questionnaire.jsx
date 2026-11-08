@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { anikaQuestions } from '../data/anikaQuestions';
 
-const initialQuestions = [
+const sonikaQuestions = [
   {
     id: 1,
     category: 'interests',
@@ -123,7 +124,8 @@ const initialQuestions = [
   }
 ];
 
-export default function Questionnaire({ onComplete }) {
+export default function Questionnaire({ onComplete, profile }) {
+  const questions = profile === 'anika' ? anikaQuestions : sonikaQuestions;
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
   const [streamScores, setStreamScores] = useState({
@@ -138,15 +140,16 @@ export default function Questionnaire({ onComplete }) {
     const newAnswers = { ...answers, [currentQuestion]: option };
     setAnswers(newAnswers);
 
-    if (option.streams) {
+    const tags = option.streams || option.interests;
+    if (tags) {
       const newScores = { ...streamScores };
-      option.streams.forEach(stream => {
-        newScores[stream] += 1;
+      tags.forEach(stream => {
+        newScores[stream] = (newScores[stream] || 0) + 1;
       });
       setStreamScores(newScores);
     }
 
-    if (currentQuestion < initialQuestions.length - 1) {
+    if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
       onComplete({
@@ -156,19 +159,19 @@ export default function Questionnaire({ onComplete }) {
     }
   };
 
-  const progress = ((currentQuestion + 1) / initialQuestions.length) * 100;
+  const progress = ((currentQuestion + 1) / questions.length) * 100;
 
   return (
     <div className="max-w-3xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Career Assessment</h1>
-        <p className="text-gray-600">Answer these questions to help us understand your interests</p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">{profile === 'anika' ? 'What Do You Love?' : 'Career Assessment'}</h1>
+        <p className="text-gray-600">{profile === 'anika' ? 'Answer these fun questions to discover what you love!' : 'Answer these questions to help us understand your interests'}</p>
       </div>
 
       <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
         <div className="mb-8">
           <div className="flex justify-between items-center mb-3">
-            <span className="text-gray-600 text-sm font-medium">Question {currentQuestion + 1} of {initialQuestions.length}</span>
+            <span className="text-gray-600 text-sm font-medium">Question {currentQuestion + 1} of {questions.length}</span>
             <span className="px-4 py-1.5 bg-blue-100 text-blue-600 rounded-full text-sm font-bold">{Math.round(progress)}%</span>
           </div>
           <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
@@ -180,11 +183,11 @@ export default function Questionnaire({ onComplete }) {
         </div>
 
         <h2 className="text-2xl font-bold text-gray-900 mb-8 leading-tight">
-          {initialQuestions[currentQuestion].question}
+          {questions[currentQuestion].question}
         </h2>
 
         <div className="space-y-3">
-          {initialQuestions[currentQuestion].options.map((option, index) => (
+          {questions[currentQuestion].options.map((option, index) => (
             <button
               key={index}
               onClick={() => handleAnswer(option)}

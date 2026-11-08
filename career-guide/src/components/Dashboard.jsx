@@ -1,4 +1,26 @@
-export default function Dashboard({ projectResults, questionnaireData, onViewRecommendations }) {
+const anikaStreamNames = {
+  art: 'Artist',
+  science: 'Scientist',
+  sports: 'Athlete',
+  music: 'Musician',
+  animals: 'Animal Lover',
+  helping: 'Helper',
+  building: 'Builder',
+  writing: 'Writer',
+  tech: 'Tech Wizard',
+  nature: 'Nature Explorer'
+};
+
+export default function Dashboard({ projectResults, questionnaireData, onViewRecommendations, profile }) {
+  const isAnika = profile === 'anika';
+  const displayName = isAnika ? 'Anika' : 'Sonika';
+  const streamNames = isAnika ? anikaStreamNames : {
+    engineering: 'Engineering',
+    medical: 'Medical',
+    commerce: 'Commerce',
+    arts: 'Arts',
+    science: 'Science'
+  };
   const totalProjects = projectResults.length;
   const averageScore = totalProjects > 0 
     ? projectResults.reduce((acc, r) => acc + (r.score / r.maxScore) * 100, 0) / totalProjects 
@@ -21,15 +43,6 @@ export default function Dashboard({ projectResults, questionnaireData, onViewRec
   Object.keys(streamScores).forEach(stream => {
     streamPercentages[stream] = totalScore > 0 ? Math.round((streamScores[stream] / totalScore) * 100) : 0;
   });
-
-  // Map streams to display names
-  const streamNames = {
-    engineering: 'Engineering',
-    medical: 'Medical',
-    commerce: 'Commerce',
-    arts: 'Arts',
-    science: 'Science'
-  };
 
   // Create strengths based on stream scores
   const strengths = Object.entries(streamPercentages)
@@ -68,10 +81,10 @@ export default function Dashboard({ projectResults, questionnaireData, onViewRec
     <div className="max-w-7xl mx-auto">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Welcome, Sonika!
+          Welcome, {displayName}!
         </h1>
         <p className="text-gray-600">
-          Let's build your ideal career path with guidance
+          {isAnika ? 'Let\'s find your dream job!' : 'Let\'s build your ideal career path with guidance'}
         </p>
       </div>
 
@@ -138,7 +151,7 @@ export default function Dashboard({ projectResults, questionnaireData, onViewRec
                       cx="72"
                       cy="72"
                       r="60"
-                      stroke={['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'][idx]}
+                      stroke={['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#f97316', '#84cc16', '#6366f1'][idx % 10]}
                       strokeWidth="24"
                       fill="none"
                       strokeDasharray={`${circumference * (interest.value / 100)}`}
@@ -152,7 +165,7 @@ export default function Dashboard({ projectResults, questionnaireData, onViewRec
           <div className="grid grid-cols-2 gap-2 text-xs">
             {interests.map((interest, idx) => (
               <div key={idx} className="flex items-center gap-2">
-                <div className={`w-3 h-3 rounded-full`} style={{ backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'][idx] }} />
+                <div className={`w-3 h-3 rounded-full`} style={{ backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#f97316', '#84cc16', '#6366f1'][idx % 10] }} />
                 <span className="text-gray-600 font-medium">{interest.name} ({interest.value}%)</span>
               </div>
             ))}
@@ -201,7 +214,7 @@ export default function Dashboard({ projectResults, questionnaireData, onViewRec
             onClick={onViewRecommendations}
             className="px-10 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl font-bold text-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
-            Get Your Stream Recommendations
+            {isAnika ? 'See My Dream Jobs! 🌟' : 'Get Your Stream Recommendations'}
           </button>
         </div>
       )}

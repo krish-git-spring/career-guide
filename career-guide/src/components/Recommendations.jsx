@@ -1,6 +1,8 @@
 import { streams } from '../data/streams';
+import { anikaStreams } from '../data/anikaStreams';
 
-export default function Recommendations({ initialScores, projectResults, country, onStreamSelect }) {
+export default function Recommendations({ initialScores, projectResults, country, onStreamSelect, profile }) {
+  const streamsData = profile === 'anika' ? anikaStreams : streams;
   // Check if user has completed the assessment
   if (!initialScores || Object.keys(initialScores).length === 0) {
     return (
@@ -37,11 +39,12 @@ export default function Recommendations({ initialScores, projectResults, country
 
   const finalScores = calculateFinalScores();
   const sortedStreams = Object.entries(finalScores)
+    .filter(([streamName]) => streamsData[streamName])
     .sort(([, a], [, b]) => b - a)
     .slice(0, 3);
 
   const topStream = sortedStreams[0][0];
-  const topStreamData = streams[topStream];
+  const topStreamData = streamsData[topStream];
 
   const generateReasoning = (streamName, score, rank) => {
     const reasons = [];
@@ -65,7 +68,7 @@ export default function Recommendations({ initialScores, projectResults, country
     <div className="max-w-6xl mx-auto">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Your Stream Recommendations
+          {profile === 'anika' ? 'Your Dream Jobs' : 'Your Stream Recommendations'}
         </h1>
         <p className="text-gray-600">
           Based on your interests, project performance, and questionnaire responses
@@ -120,16 +123,16 @@ export default function Recommendations({ initialScores, projectResults, country
           <div key={streamName} className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center text-4xl">
-                {streams[streamName].icon}
+                {streamsData[streamName].icon}
               </div>
               <div>
                 <div className="text-sm text-gray-500 mb-1 font-semibold">Alternative #{idx + 2}</div>
-                <h3 className="text-xl font-bold text-gray-900">{streams[streamName].name}</h3>
+                <h3 className="text-xl font-bold text-gray-900">{streamsData[streamName].name}</h3>
               </div>
             </div>
             
             <p className="text-gray-600 mb-4 leading-relaxed">
-              {streams[streamName].description}
+              {streamsData[streamName].description}
             </p>
 
             <div className="space-y-2 mb-4">
