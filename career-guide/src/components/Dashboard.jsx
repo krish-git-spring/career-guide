@@ -70,12 +70,21 @@ export default function Dashboard({ projectResults, questionnaireData, onViewRec
       match: Math.min(Math.round((score / 10) * 100), 95)
     }));
 
-  const nextSteps = [
-    'Book 1:1 Counseling',
-    'Take AI Career Assessment',
-    'Get Your Detailed Report',
-    'Start Your Roadmap',
-  ];
+  const projectsToGo = Math.max(3 - totalProjects, 0);
+  const journeyMessages = isAnika
+    ? [
+        'You\'re just getting started — try your first fun project!',
+        'Great start! One more project to go!',
+        'Almost there! Just one more project!',
+        'Amazing! You\'ve unlocked your dream job matches! 🌟'
+      ]
+    : [
+        'You\'re just getting started — try your first project!',
+        'Great start! One more project to go!',
+        'Almost there! Just one more project!',
+        'Amazing! You\'ve unlocked your stream recommendations!'
+      ];
+  const journeyMessage = journeyMessages[Math.min(totalProjects, 3)];
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -187,24 +196,45 @@ export default function Dashboard({ projectResults, questionnaireData, onViewRec
           </div>
         </div>
 
-        {/* Next Steps */}
+        {/* Project Progress */}
         <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Next Steps</h3>
-          <div className="space-y-3 mb-6">
-            {nextSteps.map((step, idx) => (
-              <div key={idx} className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-lg bg-blue-100 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <span className="text-gray-700 font-medium">{step}</span>
+          <h3 className="text-lg font-bold text-gray-900 mb-4">Your Journey</h3>
+          <div className="flex items-center gap-4 mb-4">
+            <div className="relative w-20 h-20 flex-shrink-0">
+              <svg className="w-full h-full transform -rotate-90">
+                <circle cx="40" cy="40" r="34" stroke="#e5e7eb" strokeWidth="8" fill="none" />
+                <circle
+                  cx="40" cy="40" r="34"
+                  stroke={totalProjects >= 3 ? '#10b981' : '#3b82f6'}
+                  strokeWidth="8"
+                  fill="none"
+                  strokeDasharray={`${2 * Math.PI * 34}`}
+                  strokeDashoffset={`${2 * Math.PI * 34 * (1 - Math.min(totalProjects, 3) / 3)}`}
+                  strokeLinecap="round"
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xl font-bold text-gray-900">{totalProjects}/3</span>
               </div>
-            ))}
+            </div>
+            <div>
+              <p className="text-gray-700 font-semibold">
+                {totalProjects} project{totalProjects !== 1 ? 's' : ''} completed
+              </p>
+              <p className="text-gray-500 text-sm mt-1">{journeyMessage}</p>
+            </div>
           </div>
-          <button className="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold hover:from-blue-700 hover:to-blue-800 transition-all shadow-md hover:shadow-lg">
-            Book a Session
-          </button>
+          <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+            <div
+              className={`h-full rounded-full transition-all duration-500 ${totalProjects >= 3 ? 'bg-gradient-to-r from-green-500 to-green-600' : 'bg-gradient-to-r from-blue-500 to-blue-600'}`}
+              style={{ width: `${Math.min(totalProjects, 3) / 3 * 100}%` }}
+            />
+          </div>
+          {projectsToGo > 0 && (
+            <p className="text-gray-400 text-xs mt-3 text-center">
+              Complete {projectsToGo} more project{projectsToGo !== 1 ? 's' : ''} to unlock recommendations
+            </p>
+          )}
         </div>
       </div>
 
