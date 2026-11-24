@@ -14,7 +14,7 @@ export default function ProfileSelection({ onSelect }) {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-3 gap-6">
           <button
             onClick={() => onSelect('sonika')}
             className="group bg-white rounded-3xl p-10 shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105"
@@ -47,6 +47,25 @@ export default function ProfileSelection({ onSelect }) {
             </p>
             <div className="mt-6 inline-flex items-center gap-2 text-pink-600 font-bold group-hover:gap-3 transition-all">
               Let's play & learn
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </div>
+          </button>
+
+          <button
+            onClick={() => onSelect('aanvi')}
+            className="group bg-white rounded-3xl p-10 shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105"
+          >
+            <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-rose-500 rounded-full flex items-center justify-center text-5xl mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform">
+              👧
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">Aanvi</h2>
+            <p className="text-gray-600 text-lg leading-relaxed">
+              Drawing, painting, K-pop quizzes, and fun projects for a creative 7-year-old!
+            </p>
+            <div className="mt-6 inline-flex items-center gap-2 text-orange-600 font-bold group-hover:gap-3 transition-all">
+              Let's create & play
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>

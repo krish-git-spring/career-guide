@@ -13,8 +13,10 @@ const anikaStreamNames = {
 
 export default function Dashboard({ projectResults, questionnaireData, onViewRecommendations, profile }) {
   const isAnika = profile === 'anika';
-  const displayName = isAnika ? 'Anika' : 'Sonika';
-  const streamNames = isAnika ? anikaStreamNames : {
+  const isAanvi = profile === 'aanvi';
+  const isKid = isAnika || isAanvi;
+  const displayName = isAnika ? 'Anika' : isAanvi ? 'Aanvi' : 'Sonika';
+  const streamNames = isKid ? anikaStreamNames : {
     engineering: 'Engineering',
     medical: 'Medical',
     commerce: 'Commerce',
@@ -71,7 +73,7 @@ export default function Dashboard({ projectResults, questionnaireData, onViewRec
     }));
 
   const projectsToGo = Math.max(3 - totalProjects, 0);
-  const journeyMessages = isAnika
+  const journeyMessages = isKid
     ? [
         'You\'re just getting started — try your first fun project!',
         'Great start! One more project to go!',
@@ -93,7 +95,7 @@ export default function Dashboard({ projectResults, questionnaireData, onViewRec
           Welcome, {displayName}!
         </h1>
         <p className="text-gray-600">
-          {isAnika ? 'Let\'s find your dream job!' : 'Let\'s build your ideal career path with guidance'}
+          {isKid ? 'Let\'s find your dream job!' : 'Let\'s build your ideal career path with guidance'}
         </p>
       </div>
 
@@ -244,7 +246,7 @@ export default function Dashboard({ projectResults, questionnaireData, onViewRec
             onClick={onViewRecommendations}
             className="px-10 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl font-bold text-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
-            {isAnika ? 'See My Dream Jobs! 🌟' : 'Get Your Stream Recommendations'}
+            {isKid ? 'See My Dream Jobs! 🌟' : 'Get Your Stream Recommendations'}
           </button>
         </div>
       )}

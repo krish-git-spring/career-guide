@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { anikaQuestions } from '../data/anikaQuestions';
+import { aanviQuestions } from '../data/aanviQuestions';
 
 const sonikaQuestions = [
   {
@@ -125,7 +126,8 @@ const sonikaQuestions = [
 ];
 
 export default function Questionnaire({ onComplete, profile }) {
-  const questions = profile === 'anika' ? anikaQuestions : sonikaQuestions;
+  const isKid = profile === 'anika' || profile === 'aanvi';
+  const questions = profile === 'anika' ? anikaQuestions : profile === 'aanvi' ? aanviQuestions : sonikaQuestions;
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
   const [streamScores, setStreamScores] = useState({
@@ -164,8 +166,8 @@ export default function Questionnaire({ onComplete, profile }) {
   return (
     <div className="max-w-3xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">{profile === 'anika' ? 'What Do You Love?' : 'Career Assessment'}</h1>
-        <p className="text-gray-600">{profile === 'anika' ? 'Answer these fun questions to discover what you love!' : 'Answer these questions to help us understand your interests'}</p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">{isKid ? 'What Do You Love?' : 'Career Assessment'}</h1>
+        <p className="text-gray-600">{isKid ? 'Answer these fun questions to discover what you love!' : 'Answer these questions to help us understand your interests'}</p>
       </div>
 
       <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">

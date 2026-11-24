@@ -143,3 +143,13 @@ export const taylorQuestions = taylorQuestionsRaw.split('\n').filter(Boolean).ma
     answer: parseInt(parts[5], 10)
   };
 });
+
+// Split into 10 progressive difficulty levels:
+// early = album basics, middle = song deep cuts, late = hardest trivia
+export const taylorLevels = (() => {
+  const levelCount = 10;
+  const per = Math.ceil(taylorQuestions.length / levelCount);
+  return Array.from({ length: levelCount }, (_, i) =>
+    taylorQuestions.slice(i * per, (i + 1) * per)
+  ).filter(l => l.length > 0);
+})();

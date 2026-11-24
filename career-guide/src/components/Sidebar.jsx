@@ -1,12 +1,20 @@
 export default function Sidebar({ currentView, onNavigate, profile }) {
   const isAnika = profile === 'anika';
+  const isAanvi = profile === 'aanvi';
+  const isKid = isAnika || isAanvi;
+  const displayName = isAnika ? 'Anika' : isAanvi ? 'Aanvi' : 'Sonika';
+
   const navItems = [
     { id: 'landing', label: 'Home', icon: '🏠' },
-    { id: 'questionnaire', label: isAnika ? 'My Interests' : 'Assessments', icon: '📋' },
+    { id: 'questionnaire', label: isKid ? 'My Interests' : 'Assessments', icon: '📋' },
     { id: 'projects', label: 'Projects', icon: '🛠️' },
     ...(isAnika ? [{ id: 'taylorQuiz', label: 'Taylor Quiz! 🎤', icon: '🎤' }] : []),
+    ...(isAanvi ? [
+      { id: 'kpopQuiz', label: 'K-Pop Quiz! 👹', icon: '👹' },
+      { id: 'activities', label: 'Art Activities 🎨', icon: '🎨' }
+    ] : []),
     { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-    { id: 'recommendations', label: isAnika ? 'Dream Jobs' : 'Recommendations', icon: '🎯' },
+    { id: 'recommendations', label: isKid ? 'Dream Jobs' : 'Recommendations', icon: '🎯' },
   ];
 
   return (
@@ -15,7 +23,7 @@ export default function Sidebar({ currentView, onNavigate, profile }) {
         <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-3xl shadow-xl shadow-blue-500/30">
           🎓
         </div>
-        <p className="mt-3 text-sm font-bold text-gray-800">{isAnika ? 'Anika' : 'Sonika'}'s Career Guide</p>
+        <p className="mt-3 text-sm font-bold text-gray-800">{displayName}'s Career Guide</p>
       </div>
 
       <nav className="flex-1">

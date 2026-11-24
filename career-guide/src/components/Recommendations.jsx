@@ -1,8 +1,10 @@
 import { streams } from '../data/streams';
 import { anikaStreams } from '../data/anikaStreams';
+import { aanviStreams } from '../data/aanviStreams';
 
 export default function Recommendations({ initialScores, projectResults, country, onStreamSelect, profile }) {
-  const streamsData = profile === 'anika' ? anikaStreams : streams;
+  const isKid = profile === 'anika' || profile === 'aanvi';
+  const streamsData = profile === 'anika' ? anikaStreams : profile === 'aanvi' ? aanviStreams : streams;
   // Check if user has completed the assessment
   if (!initialScores || Object.keys(initialScores).length === 0) {
     return (
@@ -68,7 +70,7 @@ export default function Recommendations({ initialScores, projectResults, country
     <div className="max-w-6xl mx-auto">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          {profile === 'anika' ? 'Your Dream Jobs' : 'Your Stream Recommendations'}
+          {isKid ? 'Your Dream Jobs' : 'Your Stream Recommendations'}
         </h1>
         <p className="text-gray-600">
           Based on your interests, project performance, and questionnaire responses

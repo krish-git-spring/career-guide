@@ -1,8 +1,10 @@
 import { projects } from '../data/projects';
 import { anikaProjects } from '../data/anikaProjects';
+import { aanviProjects } from '../data/aanviProjects';
 
 export default function ProjectSelection({ streamScores, onSelectProject, completedProjects, profile }) {
-  const projectsData = profile === 'anika' ? anikaProjects : projects;
+  const isKid = profile === 'anika' || profile === 'aanvi';
+  const projectsData = profile === 'anika' ? anikaProjects : profile === 'aanvi' ? aanviProjects : projects;
   const sortedStreams = Object.entries(streamScores)
     .sort(([, a], [, b]) => b - a)
     .filter(([, score]) => score > 0);
@@ -24,8 +26,8 @@ export default function ProjectSelection({ streamScores, onSelectProject, comple
   return (
     <div className="max-w-6xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">{profile === 'anika' ? 'Fun Projects for Anika!' : 'Recommended Projects'}</h1>
-        <p className="text-gray-600">{profile === 'anika' ? 'Pick a project you want to try — have fun!' : 'Complete at least 3 projects to get accurate stream recommendations'}</p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">{isKid ? 'Fun Projects!' : 'Recommended Projects'}</h1>
+        <p className="text-gray-600">{isKid ? 'Pick a project you want to try — have fun!' : 'Complete at least 3 projects to get accurate stream recommendations'}</p>
         <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-600 rounded-full">
           <span className="text-sm font-semibold">Projects Completed: {completedProjects.length}/3+</span>
         </div>
@@ -72,7 +74,7 @@ export default function ProjectSelection({ streamScores, onSelectProject, comple
               onClick={() => onSelectProject(project)}
               className="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold hover:from-blue-700 hover:to-blue-800 transition-all shadow-md hover:shadow-lg"
             >
-              {profile === 'anika' ? 'Start Project 🎨' : 'Start Project'}
+              {isKid ? 'Start Project 🎨' : 'Start Project'}
             </button>
           </div>
         ))}
@@ -84,7 +86,7 @@ export default function ProjectSelection({ streamScores, onSelectProject, comple
             onClick={() => window.location.reload()}
             className="px-10 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-2xl font-bold text-lg hover:from-green-700 hover:to-green-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
-            {profile === 'anika' ? 'See My Dream Jobs! 🌟' : 'View My Recommendations'}
+            {isKid ? 'See My Dream Jobs! 🌟' : 'View My Recommendations'}
           </button>
         </div>
       )}

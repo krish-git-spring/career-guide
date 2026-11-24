@@ -1,8 +1,10 @@
 import { streams } from '../data/streams';
 import { anikaStreams } from '../data/anikaStreams';
+import { aanviStreams } from '../data/aanviStreams';
 
 export default function StreamDetails({ streamKey, onBack, profile }) {
-  const streamsData = profile === 'anika' ? anikaStreams : streams;
+  const isKid = profile === 'anika' || profile === 'aanvi';
+  const streamsData = profile === 'anika' ? anikaStreams : profile === 'aanvi' ? aanviStreams : streams;
   const streamData = streamsData[streamKey];
 
   return (
@@ -30,7 +32,7 @@ export default function StreamDetails({ streamKey, onBack, profile }) {
       </div>
 
       <h2 className="text-2xl font-bold text-gray-900 mb-6">
-        {profile === 'anika' ? 'Fun Things You Can Try' : 'Sub-Streams and Specializations'}
+        {isKid ? 'Fun Things You Can Try' : 'Sub-Streams and Specializations'}
       </h2>
 
       <div className="grid md:grid-cols-2 gap-6 mb-8">
@@ -59,7 +61,7 @@ export default function StreamDetails({ streamKey, onBack, profile }) {
             </div>
 
             <div className="mb-4">
-              <h4 className="text-sm font-semibold text-gray-500 mb-2">{profile === 'anika' ? 'Dream Jobs' : 'Career Paths'}</h4>
+              <h4 className="text-sm font-semibold text-gray-500 mb-2">{isKid ? 'Dream Jobs' : 'Career Paths'}</h4>
               <div className="space-y-2">
                 {subStream.careerPaths.map((path, pIdx) => (
                   <div key={pIdx} className="text-gray-700 text-sm font-medium flex items-start gap-2">
@@ -73,7 +75,7 @@ export default function StreamDetails({ streamKey, onBack, profile }) {
             </div>
 
             <div className="mb-4">
-              <h4 className="text-sm font-semibold text-gray-500 mb-2">{profile === 'anika' ? 'When You Grow Up' : 'Program Duration'}</h4>
+              <h4 className="text-sm font-semibold text-gray-500 mb-2">{isKid ? 'When You Grow Up' : 'Program Duration'}</h4>
               <div className="text-gray-700 font-semibold">{subStream.duration}</div>
             </div>
 
@@ -115,7 +117,7 @@ export default function StreamDetails({ streamKey, onBack, profile }) {
                 </div>
               </div>
             </div>
-            ) : profile === 'anika' ? (
+            ) : isKid ? (
               <div className="bg-pink-50 rounded-xl p-4">
                 <h4 className="text-sm font-semibold text-pink-600 mb-2">🌟 Fun Fact</h4>
                 <p className="text-gray-700 text-sm font-medium">Keep practicing these skills — every great artist, scientist, and athlete started exactly where you are now!</p>

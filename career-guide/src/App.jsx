@@ -8,9 +8,13 @@ import Dashboard from './components/Dashboard';
 import Recommendations from './components/Recommendations';
 import StreamDetails from './components/StreamDetails';
 import TaylorSwiftQuiz from './components/TaylorSwiftQuiz';
+import KpopDemonHuntersQuiz from './components/KpopDemonHuntersQuiz';
+import Activities from './components/Activities';
+
+const displayNames = { sonika: 'Sonika', anika: 'Anika', aanvi: 'Aanvi' };
 
 function App() {
-  const [profile, setProfile] = useState(() => localStorage.getItem('careerGuide_profile') || null);
+  const [profile, setProfile] = useState(null);
   const [currentView, setCurrentView] = useState('landing');
   const [questionnaireData, setQuestionnaireData] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
@@ -116,7 +120,9 @@ function App() {
   }
 
   const isAnika = profile === 'anika';
-  const displayName = isAnika ? 'Anika' : 'Sonika';
+  const isAanvi = profile === 'aanvi';
+  const isKid = isAnika || isAanvi;
+  const displayName = displayNames[profile] || 'Sonika';
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -132,29 +138,46 @@ function App() {
               <p className="text-gray-600 text-lg">
                 {isAnika
                   ? 'Discover what you love through fun projects and quizzes!'
-                  : 'Discover your perfect undergraduate stream through hands-on projects'}
+                  : isAanvi
+                    ? 'Draw, paint, quiz, and discover what you love!'
+                    : 'Discover your perfect undergraduate stream through hands-on projects'}
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-xl hover:border-blue-200 transition-all duration-300 cursor-pointer transform hover:-translate-y-1" onClick={() => setCurrentView('questionnaire')}>
                 <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-3xl mb-6">📝</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{isAnika ? 'My Interests' : 'Take Assessment'}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{isAnika ? 'Answer fun questions to discover what you love' : 'Answer questions about your interests and goals'}</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{isKid ? 'My Interests' : 'Take Assessment'}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">{isKid ? 'Answer fun questions to discover what you love' : 'Answer questions about your interests and goals'}</p>
               </div>
 
               <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-xl hover:border-blue-200 transition-all duration-300 cursor-pointer transform hover:-translate-y-1" onClick={() => setCurrentView('projects')}>
                 <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center text-3xl mb-6">🛠️</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{isAnika ? 'Fun Projects' : 'Complete Projects'}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{isAnika ? 'Try awesome projects made just for kids' : 'Do hands-on mini-projects to explore your interests'}</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{isKid ? 'Fun Projects' : 'Complete Projects'}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">{isKid ? 'Try awesome projects made just for kids' : 'Do hands-on mini-projects to explore your interests'}</p>
               </div>
 
               {isAnika && (
                 <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-xl hover:border-pink-200 transition-all duration-300 cursor-pointer transform hover:-translate-y-1" onClick={() => setCurrentView('taylorQuiz')}>
                   <div className="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center text-3xl mb-6">🎤</div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">Taylor Quiz!</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">Test how big of a Swiftie you are!</p>
+                  <p className="text-gray-600 text-sm leading-relaxed">Test how big of a Swiftie you are — 3 levels!</p>
                 </div>
+              )}
+
+              {isAanvi && (
+                <>
+                  <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-xl hover:border-red-200 transition-all duration-300 cursor-pointer transform hover:-translate-y-1" onClick={() => setCurrentView('kpopQuiz')}>
+                    <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center text-3xl mb-6">👹</div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">K-Pop Quiz!</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">How big of a Demon Hunters fan are you? 3 levels!</p>
+                  </div>
+                  <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-xl hover:border-orange-200 transition-all duration-300 cursor-pointer transform hover:-translate-y-1" onClick={() => setCurrentView('activities')}>
+                    <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center text-3xl mb-6">🎨</div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">Art Activities</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">Drawing & painting fun on paper or canvas!</p>
+                  </div>
+                </>
               )}
 
               <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-xl hover:border-blue-200 transition-all duration-300 cursor-pointer transform hover:-translate-y-1" onClick={() => setCurrentView('dashboard')}>
@@ -169,7 +192,7 @@ function App() {
                 onClick={() => setCurrentView('questionnaire')}
                 className="px-10 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl font-bold text-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
-                {isAnika ? 'Start Exploring!' : 'Start Your Journey'}
+                {isKid ? 'Start Exploring!' : 'Start Your Journey'}
               </button>
               <button
                 onClick={handleSwitchProfile}
@@ -203,7 +226,15 @@ function App() {
         )}
 
         {currentView === 'taylorQuiz' && (
-          <TaylorSwiftQuiz onBack={() => setCurrentView('landing')} />
+          <TaylorSwiftQuiz onBack={() => setCurrentView('landing')} profile={profile} />
+        )}
+
+        {currentView === 'kpopQuiz' && (
+          <KpopDemonHuntersQuiz onBack={() => setCurrentView('landing')} profile={profile} />
+        )}
+
+        {currentView === 'activities' && (
+          <Activities profile={profile} />
         )}
 
         {currentView === 'dashboard' && (
